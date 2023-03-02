@@ -6,8 +6,29 @@ function scrollHeader() {
 }
 window.addEventListener('scroll', scrollHeader);
 /*=============== COUNT VALUE NUMBER============*/
-
-
+var listCounter = document.querySelectorAll('.home__value--counter');
+function countValueNumber(element) {
+    var numberElement = element.querySelector('.home__value--number');
+    var toValue = parseInt(numberElement.innerText);
+    var countValue = 0;
+    var timeValue = 250;
+    var stepValue = toValue / timeValue;
+    var spanElement = document.createElement('span');
+    spanElement.innerText = "+";
+    let countingValue = setInterval(() => {
+        countValue += stepValue;
+        if (countValue > toValue) {
+            clearInterval(countingValue);
+            numberElement.innerText = toValue + 'K';
+        } else {
+            numberElement.innerText = Math.round(countValue) + 'K';
+        }
+        numberElement.append(spanElement);
+    }, 1);
+}
+listCounter.forEach(item => {
+    countValueNumber(item);
+});
 /*=============== SWIPER POPULAR ===============*/
 var swiperPopular = new Swiper(".popular__container", {
     spaceBetween: 32,
@@ -56,9 +77,6 @@ function scrollActive() {
         const sectionHeight = current.offsetHeight,
             sectionTop = current.offsetTop - 58,
             sectionId = current.getAttribute('id');
-        console.log('scrollY', scrollY);
-        console.log('sectionTop', sectionTop);
-        console.log('sectionHeight', sectionHeight);
         if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
             document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.add('active-link');
         } else {
